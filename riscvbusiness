@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# I'm not gonna lie I stole this formatting from OpenCore-Boot.sh
+# also followed this bitch 
+# https://colatkinson.site/linux/riscv/2021/01/27/riscv-qemu/
+# but instead of grabbing from debian, I grabbed the opensbi aur package
+
+ALLOCATED_RAM="3072" # MiB
+
+args=(
+  -cpu rv64 -m "$ALLOCATED_RAM"
+  -machine virt
+  -device virtio-blk-device,drive=hd
+  -drive file=overlay.qcow2,if=none,id=hd
+  -device virtio-net-device,netdev=net
+  -netdev user,id=net,hostfwd=tcp::2222-:22
+  -bios /usr/share/opensbi/lp64/generic/firmware/fw_dynamic.elf
+# -kernel ./u-boot-qemu/uboot.elf
+  -object rng-random,filename=/dev/urandom,id=rng
+  -device virtio-rng-device,rng=rng
+  -append "root=LABEL=rootfs console=ttyS0"
+
+  # -smp "$CPU_THREADS",cores="$CPU_CORES",sockets="$CPU_SOCKETS"
+  # -monitor stdio
+  # -device VGA,vgamem_mb=128
+)
+
+qemu-system-x86_64 "${args[@]}"
