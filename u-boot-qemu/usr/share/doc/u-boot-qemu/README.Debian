@@ -1,0 +1,44 @@
+
+Booting a qemu/kvm guest with u-boot
+====================================
+
+To boot a qemu guest with u-boot, start qemu-system with the '-bios
+u-boot.bin' option. Use the full path to the u-boot.bin file that corresponds
+with the archicture you are trying to boot.
+
+
+Booting from disk
+-----------------
+
+To allow a qemu guest to boot from disk, you need a u-boot config file on the
+disk. There is no need to install u-boot in the guest, as you are passing
+u-boot directly to qemu. The u-boot config file can be automatically created
+by installing the u-boot-menu package. Alternatively, the flash-kernel package
+can also create u-boot config files, but it currently doesn't recognise qemu
+guests.
+
+
+Netboot
+-------
+
+u-boot supports the e1000 network driver to boot from the network. Please note
+that u-boot will initially output "Net:   No ethernet found.", before
+continuing with the netboot.
+
+
+Device tree
+-----------
+
+On architectures where a device tree file is needed to boot, qemu will
+generate the device tree based on the virtual hardware that is configured.
+u-boot should be able to find this data at the default address where u-boot
+looks for this data (${fdt_addr}, so you should use that address in your
+u-boot script.
+
+
+Examples
+========
+
+TODO
+
+

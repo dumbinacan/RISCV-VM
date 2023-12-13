@@ -1,0 +1,11 @@
+# These bootloaders need to be statically linked.
+u-boot-qemu binary: statically-linked-binary *usr/lib/u-boot/*/uboot.elf*
+
+# These are bootloader binaries, and have no external dependency information
+u-boot-qemu binary: shared-library-lacks-prerequisites *usr/lib/u-boot/*/uboot.elf*
+
+u-boot-qemu: description-synopsis-starts-with-article
+
+
+# These are binary firmware blobs
+u-boot-qemu binary: arch-independent-package-contains-binary-or-object *usr/lib/u-boot/*/uboot.elf*
